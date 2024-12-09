@@ -26,9 +26,13 @@ export class AppComponent implements OnInit {
   // Cadastrar produto
   newProductName = '';
 
+  // Editar produto
+  editProductId = '';
+  editProductName = '';
+
   // Token de autenticação
   token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDYWRhc3RybyBkZSBVc3XDoXJpbyBlIFByb2R1dG9zIiwianRpIjoiYzA0ZjUxZDQtN2Y2MS00MDdiLTlmNmEtNGU2ZTQzMjAzM2I1IiwiZXhwIjoxNzMzNjczNDc1LCJpc3MiOiJUZXN0ZS5TZWN1cmlyeS5CZWFyZXIiLCJhdWQiOiJUZXN0ZS5TZWN1cmlyeS5CZWFyZXIifQ.xYP0OI0IQgaaZ7h-Y5HkuHzzftW6ZjNHLHKZITMhrJA'; // ou `localStorage.getItem('token')` se o token estiver armazenado no localStorage
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDYWRhc3RybyBkZSBVc3XDoXJpbyBlIFByb2R1dG9zIiwianRpIjoiOWI1NGQ4NzgtNjBkNS00MmJlLWFlMTQtYmJmN2Q5YmRjMmJhIiwiZXhwIjoxNzMzNzU0NDU2LCJpc3MiOiJUZXN0ZS5TZWN1cmlyeS5CZWFyZXIiLCJhdWQiOiJUZXN0ZS5TZWN1cmlyeS5CZWFyZXIifQ.lcVmmEovw7rN9DftrjeY9yA-W9Vu9W_Ih52KNHVbHpM'; // ou `localStorage.getItem('token')` se o token estiver armazenado no localStorage
   headers = {
     Authorization: `Bearer ${this.token}`,
   };
@@ -84,6 +88,27 @@ export class AppComponent implements OnInit {
   }
 
   // Função para atualizar produto
+  updateProduct() {
+    if (!this.editProductId || !this.editProductName) {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+    const updatedProduct: Product = {
+      id: this.editProductId,
+      name: this.editProductName,
+    };
+
+    this.http
+      .put<Product>(`${this.url}/api/Update`, updatedProduct, {
+        headers: this.headers,
+      })
+      .subscribe((response) => {
+        console.log('Produto atualizado com sucesso:', response);
+        this.editProductId = '';
+        this.editProductName = '';
+        this.getProducts();
+      });
+  }
 
   // Função para deletar produto
 }

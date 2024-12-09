@@ -3,6 +3,12 @@
   <input type="text" [(ngModel)]="newProductName" />
   <button (click)="addProduct()">Adicionar</button>
 </div>
+<h1>Editar Produto</h1>
+<div>
+  <input type="text" [(ngModel)]="editProductId" />
+  <input type="text" [(ngModel)]="editProductName" />
+  <button (click)="updateProduct()">Editar</button>
+</div>
 <h1>Campo de Busca</h1>
 <div>
   <input
