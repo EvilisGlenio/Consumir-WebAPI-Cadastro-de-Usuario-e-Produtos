@@ -30,6 +30,9 @@ export class AppComponent implements OnInit {
   editProductId = '';
   editProductName = '';
 
+  // Deletar produto
+  removeProductId = '';
+
   // Token de autenticação
   token =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDYWRhc3RybyBkZSBVc3XDoXJpbyBlIFByb2R1dG9zIiwianRpIjoiOWI1NGQ4NzgtNjBkNS00MmJlLWFlMTQtYmJmN2Q5YmRjMmJhIiwiZXhwIjoxNzMzNzU0NDU2LCJpc3MiOiJUZXN0ZS5TZWN1cmlyeS5CZWFyZXIiLCJhdWQiOiJUZXN0ZS5TZWN1cmlyeS5CZWFyZXIifQ.lcVmmEovw7rN9DftrjeY9yA-W9Vu9W_Ih52KNHVbHpM'; // ou `localStorage.getItem('token')` se o token estiver armazenado no localStorage
@@ -111,4 +114,22 @@ export class AppComponent implements OnInit {
   }
 
   // Função para deletar produto
+  removeProduct() {
+    if (!this.removeProductId) {
+      alert('Por favor, insira um ID válido.');
+      return;
+    }
+    this.http
+      .delete<Product>(`${this.url}/api/Delete`, {
+        headers: this.headers,
+        params: {
+          id: this.removeProductId,
+        },
+      })
+      .subscribe((response) => {
+        console.log('Produto removido com sucesso:', response);
+        this.removeProductId = '';
+        this.getProducts();
+      });
+  }
 }
